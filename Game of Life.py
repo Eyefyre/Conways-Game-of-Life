@@ -1,16 +1,17 @@
 import pygame
 
-WIDTH,HEIGHT = 1000,1000
-WINDOW = pygame.display.set_mode((WIDTH,HEIGHT))
+WIDTH, HEIGHT = 1000, 1000
+WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game of Life")
 FPS = 60
-WHITE = (200,200,200)
-BLACK = (0,0,0)
-rows,cols = 50,50
+WHITE = (200, 200, 200)
+BLACK = (0, 0, 0)
+rows, cols = 50, 50
 squares = [[False for i in range(rows)] for j in range(cols)]
 squareHeight = HEIGHT/rows
 squareWidth = WIDTH/cols
 timestepsRun = False
+
 
 def main():
     clock = pygame.time.Clock()
@@ -27,6 +28,7 @@ def main():
         draw_all()
     pygame.quit()
 
+
 def draw_all():
     draw_window()
     draw_board()
@@ -39,11 +41,15 @@ def draw_board():
             xLoc = x * squareWidth
             yLoc = y * squareHeight
             if squares[x][y]:
-                pygame.draw.rect(WINDOW, BLACK, [xLoc,yLoc, squareWidth,squareHeight])
-                pygame.draw.rect(WINDOW, WHITE, [xLoc,yLoc, squareWidth,squareHeight],1)
-            else: 
-                pygame.draw.rect(WINDOW, BLACK, [xLoc,yLoc, squareWidth,squareHeight],1)
-            
+                pygame.draw.rect(
+                    WINDOW, BLACK, [xLoc, yLoc, squareWidth, squareHeight])
+                pygame.draw.rect(
+                    WINDOW, WHITE, [xLoc, yLoc, squareWidth, squareHeight], 1)
+            else:
+                pygame.draw.rect(
+                    WINDOW, BLACK, [xLoc, yLoc, squareWidth, squareHeight], 1)
+
+
 def checkMouseClick():
     mouse = pygame.mouse.get_pos()
     for x in range(cols):
@@ -51,12 +57,13 @@ def checkMouseClick():
             xLoc = squareWidth * x
             yLoc = squareHeight * y
             if xLoc <= mouse[0] <= (xLoc + squareWidth) and yLoc <= mouse[1] <= (yLoc + squareHeight):
-                if squares[x][y]: 
+                if squares[x][y]:
                     squares[x][y] = False
-                else: 
+                else:
                     squares[x][y] = True
 
-def checkNeighbours(x,y):
+
+def checkNeighbours(x, y):
     neighbourCount = 0
     if (x-1) > -1 and (y-1) > -1 and squares[x-1][y-1]:
         neighbourCount += 1
@@ -71,10 +78,11 @@ def checkNeighbours(x,y):
     if (x-1) > -1 and (y+1) < (rows-1) and squares[x-1][y+1]:
         neighbourCount += 1
     if (y+1) < (rows-1) and squares[x][y+1]:
-        neighbourCount += 1 
+        neighbourCount += 1
     if (x+1) < (cols-1) and (y+1) < (rows-1) and squares[x+1][y+1]:
         neighbourCount += 1
     return neighbourCount
+
 
 def checkKeyDown(event):
     global timestepsRun
@@ -88,12 +96,13 @@ def checkKeyDown(event):
         else:
             timestepsRun = True
 
+
 def timeStep():
     global squares
     states = [[False for i in range(rows)] for j in range(cols)]
     for x in range(cols):
         for y in range(rows):
-            neighbours = checkNeighbours(x,y)
+            neighbours = checkNeighbours(x, y)
             if squares[x][y]:
                 if neighbours < 2:
                     states[x][y] = False
@@ -114,12 +123,14 @@ def resetBoard():
         for y in range(rows):
             squares[x][y] = False
 
+
 def draw_window():
     WINDOW.fill(WHITE)
+
 
 def update_display():
     pygame.display.update()
 
+
 if __name__ == "__main__":
     main()
-
