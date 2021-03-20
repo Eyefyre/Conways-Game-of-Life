@@ -1,4 +1,5 @@
 import pygame
+import random
 
 WIDTH, HEIGHT = 1000, 1000
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -7,7 +8,7 @@ FPS = 60
 WHITE = (200, 200, 200)
 BLACK = (0, 0, 0)
 rows, cols = 50, 50
-squares = [[False for i in range(rows)] for j in range(cols)]
+squares = [[random.choice([True,False]) for i in range(rows)] for j in range(cols)]
 squareHeight = HEIGHT/rows
 squareWidth = WIDTH/cols
 timestepsRun = False
