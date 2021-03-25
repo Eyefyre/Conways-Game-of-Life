@@ -4,10 +4,10 @@ import random
 WIDTH, HEIGHT = 1000, 1000
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Game of Life")
-FPS = 60
+FPS = 30
 WHITE = (200, 200, 200)
 BLACK = (0, 0, 0)
-rows, cols = 50, 50
+rows, cols = 50,50
 squares = [[random.choice([True,False]) for i in range(rows)] for j in range(cols)]
 squareHeight = HEIGHT/rows
 squareWidth = WIDTH/cols
@@ -26,6 +26,8 @@ def main():
                 checkKeyDown(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 checkMouseClick()
+        if timestepsRun:
+            timeStep()
         draw_all()
     pygame.quit()
 
@@ -66,23 +68,16 @@ def checkMouseClick():
 
 def checkNeighbours(x, y):
     neighbourCount = 0
-    if (x-1) > -1 and (y-1) > -1 and squares[x-1][y-1]:
-        neighbourCount += 1
-    if (y-1) > -1 and squares[x][y-1]:
-        neighbourCount += 1
-    if (x+1) < (cols-1) and (y-1) > -1 and squares[x+1][y-1]:
-        neighbourCount += 1
-    if (x-1) > -1 and squares[x-1][y]:
-        neighbourCount += 1
-    if (x+1) < (cols-1) and squares[x+1][y]:
-        neighbourCount += 1
-    if (x-1) > -1 and (y+1) < (rows-1) and squares[x-1][y+1]:
-        neighbourCount += 1
-    if (y+1) < (rows-1) and squares[x][y+1]:
-        neighbourCount += 1
-    if (x+1) < (cols-1) and (y+1) < (rows-1) and squares[x+1][y+1]:
-        neighbourCount += 1
+    for i in range(-1,2):
+        for j in range(-1,2):
+            col = (x+i + cols) % cols
+            row = (y+j + rows) % rows
+            if squares[col][row]:
+                neighbourCount += 1
+    if squares[x][y]:
+        neighbourCount -= 1
     return neighbourCount
+
 
 
 def checkKeyDown(event):
