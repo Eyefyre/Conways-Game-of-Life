@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 WIDTH, HEIGHT = 1000, 1000
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -54,16 +55,10 @@ def draw_board():
 
 
 def checkMouseClick():
-    mouse = pygame.mouse.get_pos()
-    for x in range(cols):
-        for y in range(rows):
-            xLoc = squareWidth * x
-            yLoc = squareHeight * y
-            if xLoc <= mouse[0] <= (xLoc + squareWidth) and yLoc <= mouse[1] <= (yLoc + squareHeight):
-                if squares[x][y]:
-                    squares[x][y] = False
-                else:
-                    squares[x][y] = True
+    mouse_pos = pygame.mouse.get_pos()
+    xIndex = math.floor((mouse_pos[0]/squareHeight))
+    yIndex = math.floor((mouse_pos[1]/squareWidth))
+    squares[xIndex][yIndex] = not squares[xIndex][yIndex]
 
 
 def checkNeighbours(x, y):
